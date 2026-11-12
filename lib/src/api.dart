@@ -29,8 +29,8 @@ class ApiCliente {
   ApiCliente._();
   static final ApiCliente instancia = ApiCliente._();
 
-  /// En el emulador de Android, 10.0.2.2 es la computadora; con un celular por USB se usa «adb reverse».
-  static const servidorPorDefecto = 'http://10.0.2.2:5080';
+  /// Servidor de producción en la nube (Render).
+  static const servidorPorDefecto = 'https://visorsig-backend.onrender.com';
   static const _claveServidor = 'servidor';
   static const _claveToken = 'token';
 

@@ -56,7 +56,7 @@ class _PantallaAccesoState extends State<PantallaAcceso> {
     final texto = (valor ?? '').trim();
     if (texto.isEmpty) return 'Ingrese la dirección del servidor.';
     final uri = Uri.tryParse(texto.contains('://') ? texto : 'http://$texto');
-    return uri == null || uri.host.isEmpty ? 'La dirección no es válida (ejemplo: http://10.0.2.2:5080).' : null;
+    return uri == null || uri.host.isEmpty ? 'La dirección no es válida (ejemplo: https://visorsig-backend.onrender.com).' : null;
   }
 
   @override
@@ -140,8 +140,8 @@ class _PantallaAccesoState extends State<PantallaAcceso> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Emulador de Android: http://10.0.2.2:5080\n'
-                            'Celular por USB: ejecute «adb reverse tcp:5080 tcp:5080» y use http://127.0.0.1:5080',
+                            'Servidor en la nube: https://visorsig-backend.onrender.com\n'
+                            'Emulador local: http://10.0.2.2:5080',
                             style: tema.textTheme.bodySmall,
                           ),
                         ],
