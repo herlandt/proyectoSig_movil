@@ -20,7 +20,6 @@ class _PantallaAccesoState extends State<PantallaAcceso> {
   final _formulario = GlobalKey<FormState>();
   final _login = TextEditingController();
   final _contrasena = TextEditingController();
-  final _servidor = TextEditingController(text: ApiCliente.instancia.servidor);
   bool _ocultar = true;
   bool _enviando = false;
   late String? _error = widget.aviso;
@@ -29,7 +28,6 @@ class _PantallaAccesoState extends State<PantallaAcceso> {
   void dispose() {
     _login.dispose();
     _contrasena.dispose();
-    _servidor.dispose();
     super.dispose();
   }
 
@@ -40,7 +38,6 @@ class _PantallaAccesoState extends State<PantallaAcceso> {
       _error = null;
     });
     try {
-      await ApiCliente.instancia.cambiarServidor(_servidor.text);
       await ApiCliente.instancia.iniciarSesion(_login.text.trim(), _contrasena.text);
       TextInput.finishAutofillContext();
       if (!mounted) return;
@@ -50,13 +47,6 @@ class _PantallaAccesoState extends State<PantallaAcceso> {
     } finally {
       if (mounted) setState(() => _enviando = false);
     }
-  }
-
-  String? _validarServidor(String? valor) {
-    final texto = (valor ?? '').trim();
-    if (texto.isEmpty) return 'Ingrese la dirección del servidor.';
-    final uri = Uri.tryParse(texto.contains('://') ? texto : 'http://$texto');
-    return uri == null || uri.host.isEmpty ? 'La dirección no es válida (ejemplo: https://visorsig-backend.onrender.com).' : null;
   }
 
   @override
@@ -121,30 +111,6 @@ class _PantallaAccesoState extends State<PantallaAcceso> {
                             ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2))
                             : const Icon(Icons.login),
                         label: Text(_enviando ? 'Ingresando…' : 'Ingresar'),
-                      ),
-                      const SizedBox(height: 16),
-                      ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        leading: const Icon(Icons.dns_outlined),
-                        title: const Text('Servidor'),
-                        subtitle: Text(ApiCliente.instancia.servidor, overflow: TextOverflow.ellipsis),
-                        // Margen superior: sin él, la etiqueta flotante del campo queda recortada.
-                        childrenPadding: const EdgeInsets.only(top: 12, bottom: 8),
-                        children: [
-                          TextFormField(
-                            controller: _servidor,
-                            keyboardType: TextInputType.url,
-                            autocorrect: false,
-                            decoration: const InputDecoration(labelText: 'Dirección de la API'),
-                            validator: _validarServidor,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Servidor en la nube: https://visorsig-backend.onrender.com\n'
-                            'Emulador local: http://10.0.2.2:5080',
-                            style: tema.textTheme.bodySmall,
-                          ),
-                        ],
                       ),
                     ],
                   ),

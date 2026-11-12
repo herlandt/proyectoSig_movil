@@ -44,8 +44,7 @@ class ApiCliente {
   String servidor = servidorPorDefecto;
 
   Future<void> cargar() async {
-    final prefs = await SharedPreferences.getInstance();
-    servidor = prefs.getString(_claveServidor) ?? servidorPorDefecto;
+    servidor = servidorPorDefecto;
     _token = await _almacen.read(key: _claveToken);
   }
 
